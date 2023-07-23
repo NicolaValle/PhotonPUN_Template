@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public byte Id { get; set; }
+
     [SerializeField] private float speed;
     [SerializeField] private UIManager uiManager;
     [SerializeField] internal int playerNum;
@@ -16,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private PhotonView photonView;
     private Animator anim;
     private Rigidbody2D rb;
-    private BoxCollider2D bc;
     private SpriteRenderer sprite;
     private const string WALKING = "isWalking";
     private void Awake()
@@ -25,7 +26,6 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        bc = GetComponent<BoxCollider2D>();
         if (PhotonNetwork.IsMasterClient)
         {
             playerNum = 0;

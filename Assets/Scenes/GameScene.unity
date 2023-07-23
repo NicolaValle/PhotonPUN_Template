@@ -785,7 +785,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305071711}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -13.82, y: -4.83, z: 0}
+  m_LocalPosition: {x: -13.82, y: -0.54, z: 0}
   m_LocalScale: {x: 21.7, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1212,7 +1212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617020695}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 13.83, y: -4.83, z: 0}
+  m_LocalPosition: {x: 13.83, y: -0.54, z: 0}
   m_LocalScale: {x: 21.7, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1875,7 +1875,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904389326}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 5.11, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cedb44f621e8f6d4a8d195b50b95fe31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 3913991907276799232, guid: bd46070d1852e4d4db3eff6ded52d16b, type: 3}
+  enemy: {fileID: 6432091803815186759, guid: 890b6807ea045ed43920e47d752fe017, type: 3}
   timeBetweenSpawns: 3
 --- !u!1 &1910621244
 GameObject:

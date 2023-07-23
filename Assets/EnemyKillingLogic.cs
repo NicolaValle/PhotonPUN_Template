@@ -16,27 +16,27 @@ public class EnemyKillingLogic : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PhotonView playerWhoJumpOn = collision.gameObject.GetComponent<PhotonView>();
+        PlayerController playerWhoJumpOn = collision.gameObject.GetComponent<PlayerController>();
         if (playerWhoJumpOn)
         {
-            photonView.RPC("GetDamagedRPC", RpcTarget.All, playerWhoJumpOn.gameObject);
+            photonView.RPC("GetDamagedRPC", RpcTarget.All, playerWhoJumpOn);
         }
     }
 
     [PunRPC]
-    private void GetDamagedRPC(GameObject playerWhoJumpOn)
+    private void GetDamagedRPC(PlayerController playerWhoJumpOn)
     {
         enemyLogic.life--;
         enemyLogic.lifeText.text = enemyLogic.life.ToString();
         if (enemyLogic.life == 0)
         {
-            int playerNum = playerWhoJumpOn.GetComponent<PlayerController>().playerNum;
+            int playerNum = playerWhoJumpOn.playerNum;
             PhotonView playerInstance = playerWhoJumpOn.GetComponent<PhotonView>();
 
             playerWhoJumpOn.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3, ForceMode2D.Impulse);
             playerInstance.RPC("GetPointsRPC", RpcTarget.All);
             Debug.Log($"Goblin killed by Player{playerNum}");
-            PhotonNetwork.Destroy(gameObject);
+            PhotonNetwork.Destroy(this.gameObject);
 
         }
     }
