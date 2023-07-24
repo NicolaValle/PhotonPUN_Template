@@ -1,18 +1,14 @@
 using Photon.Pun;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public byte Id { get; set; }
-
     [SerializeField] private float speed;
     [SerializeField] private UIManager uiManager;
     [SerializeField] internal int playerNum;
     [SerializeField] private int health;
-    [SerializeField] private int points;
+    [SerializeField] internal int points;
     [SerializeField] private float jumpforce;
 
     private PhotonView photonView;
@@ -35,8 +31,30 @@ public class PlayerController : MonoBehaviour
             playerNum = 1;
         }
         uiManager = CheckForPlayerUI();
-        uiManager.GetComponent<PhotonView>().RPC("SetHealthRPC", RpcTarget.All, health);
+        if (uiManager != null)
+        {
+            uiManager.GetComponent<PhotonView>().RPC("SetHealthRPC", RpcTarget.All, health);
+        }
     }
+
+    private void Start()
+    {
+        //Creating a custom property hashtable doesn't derive from System.Collections
+        // but from ExitGames.Client.Photon;
+        ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+        playerProperties.Add("PlayerNum", playerNum);
+        playerProperties.Add("Points", points);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+
+        photonView.RPC("AddPlayerToDictionary", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void AddPlayerToDictionary() 
+    {
+        GameManager.Instance.photonView.RPC("AddPlayerGameObjectRPC", RpcTarget.All, playerNum, photonView.ViewID);
+    }
+
 
     private UIManager CheckForPlayerUI()
     {
@@ -71,6 +89,8 @@ public class PlayerController : MonoBehaviour
             HorizontalMovement();
             Jump();
         }
+
+
     }
 
     [PunRPC]
@@ -83,7 +103,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(EnableBC());
             Debug.Log($"Tolgo vita a Player n.{this.playerNum}");
             health -= damage;
-            uiManager.GetComponent<PhotonView>().RPC("SetHealthRPC", RpcTarget.All, health);
+            uiManager.GetComponent<PhotonView>().RPC("SetHealthRPC", RpcTarget.AllBuffered, health);
         }
     }
 
@@ -100,11 +120,12 @@ public class PlayerController : MonoBehaviour
         sprite.color = Color.white;
     }
 
-    [PunRPC]
-    public void GetPointsRPC() 
+    public void GetPoints() 
     {
-        points++;
-        uiManager.GetComponent<PhotonView>().RPC("GetPointsRPC", RpcTarget.All, points);
+        if (photonView.IsMine) 
+        {
+            GameManager.Instance.photonView.RPC("IncreaseScoreRPC", RpcTarget.AllBuffered, playerNum);
+        }
     }
 
     private void HorizontalMovement() 

@@ -6,36 +6,33 @@ using Photon.Pun;
 
 public class UIManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private int health;
-    [SerializeField] private int points;
-    private TextMeshProUGUI healthDisplay;
-    private TextMeshProUGUI pointsDisplay;
+    public static UIManager Instance;
+    [SerializeField] internal TextMeshProUGUI pointsDisplay1;
+    [SerializeField] internal TextMeshProUGUI pointsDisplay2;
 
     private void Awake()
     {
-        healthDisplay = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        healthDisplay.text = $"Life: {health}";
-        pointsDisplay = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        pointsDisplay.text = $"Points: {points}";
-    }
-
-    [PunRPC]
-    public void SetHealthRPC(int health) 
-    {
-        healthDisplay.text = $"Life: {health}";
-        if (health == 0)
+        if (Instance == null)
         {
-            Debug.Log("Sei morto");
+            Instance = this;
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+        pointsDisplay1.text = $"Points: {0}";
+        pointsDisplay2.text = $"Points: {0}";
     }
 
-
-    [PunRPC]
-    public void GetPointsRPC(int points)
+    public void UpdatePointsUI(int points, int playerNum)
     {
-        if (PhotonNetwork.IsMasterClient) 
+        if (playerNum == 0)
         {
-            pointsDisplay.text = $"Points: {points}";
+            pointsDisplay1.text = $"Points: {points}";
+        }
+        else 
+        {
+            pointsDisplay2.text = $"Points: {points}";
         }
     }
 }

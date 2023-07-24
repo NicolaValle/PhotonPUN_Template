@@ -1,11 +1,14 @@
 using Photon.Pun;
+using Photon.Realtime;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    internal PlayerController[] players;
+    internal List<Player> players;
     private PlayerController nearestPlayer;
     private SpriteRenderer sprite;
     private bool checkForGround;
@@ -19,67 +22,40 @@ public class Enemy : MonoBehaviour
     {
         photonView = GetComponentInParent<PhotonView>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        players = GetPlayerList();
+    }
 
-
+    private List<Player> GetPlayerList() 
+    {
+        List<Player> playersList = new List<Player>(PhotonNetwork.PlayerList);
+        Debug.Log(playersList);
+        return playersList;
     }
 
     private void Update()
     {
-        //Debug.Log($"Il numero di player e' {players.Length}");
-        //if (this.isActiveAndEnabled) 
-        //{
-        //    for (int i = 0; i == players.Length; i++)
-        //    {
-        //        Debug.Log(players[i].name);
-        //    }
-        //}
-
-
         lifeText.text = life.ToString();
-        if (players.Length > 1) 
+        if (players.Count > 1)
         {
-            GameObject player0 = players[0].gameObject;
-            GameObject player1 = players[1].gameObject;
-            float distanceOne = Vector2.Distance(transform.position, player0.transform.position);
-            float distanceTwo = Vector2.Distance(transform.position, player1.transform.position);
+            
+            //float distanceOne = Vector2.Distance(transform.position, player0.transform.position);
+            //float distanceTwo = Vector2.Distance(transform.position, player1.transform.position);
 
-            if (checkForGround)
-            {
-                if (distanceOne < distanceTwo)
-                {
-                    nearestPlayer = players[0];
-                }
-                else
-                {
-                    nearestPlayer = players[1];
-                }
+            //if (checkForGround)
+            //{
+            //    if (distanceOne < distanceTwo)
+            //    {
+            //        nearestPlayer = players[0];
+            //    }
+            //    else
+            //    {
+            //        nearestPlayer = players[1];
+            //    }
 
-                if (nearestPlayer != null)
-                {
-                    transform.position = Vector2.MoveTowards(transform.position, nearestPlayer.transform.position, speed * Time.deltaTime);
-                }
-            }
-
-            //if (headBC.IsTouching(player0.GetComponent<BoxCollider2D>()))
-            //{
-            //    Debug.Log("Damage goblin");
-            //    this.GetComponent<PhotonView>().RPC("GetDamagedRPC", RpcTarget.All, players[0]);
-            //}
-            //else if (headBC.IsTouching(player1.GetComponent<BoxCollider2D>())) 
-            //{
-            //    Debug.Log("Damage goblin");
-            //    this.GetComponent<PhotonView>().RPC("GetDamagedRPC", RpcTarget.All, players[1]);
-            //}
-
-            //if (bodyBC.IsTouching(player0.GetComponent<BoxCollider2D>()))
-            //{
-            //    Debug.Log("Damage player");
-            //    player0.GetComponent<PhotonView>().RPC("SetDamageTakenRPC", RpcTarget.All, life);
-            //}
-            //else if (bodyBC.IsTouching(player1.GetComponent<BoxCollider2D>()))
-            //{
-            //    Debug.Log("Damage player");
-            //    player1.GetComponent<PhotonView>().RPC("SetDamageTakenRPC", RpcTarget.All, life);
+            //    if (nearestPlayer != null)
+            //    {
+            //        transform.position = Vector2.MoveTowards(transform.position, nearestPlayer.transform.position, speed * Time.deltaTime);
+            //    }
             //}
         }
     }
@@ -99,10 +75,11 @@ public class Enemy : MonoBehaviour
     }
 
     [PunRPC]
-    private void GetDamagedRPC(int playerNumber)
+    public void GetDamagedRPC(int playerNumber)
     {
-        PlayerController playerWhoHit = players[playerNumber];
-        Debug.Log("Damage goblin");
+        Debug.Log("Goblin hitted by Player" + playerNumber);
+        GameObject playerWhoHit = GameManager.Instance.GetPlayerGameObject(playerNumber);
+        Debug.Log($"Goblin damaged by {playerWhoHit.GetComponent<PlayerController>().playerNum}");
         life--;
         lifeText.text = life.ToString();
         sprite.color = Color.red;
@@ -110,12 +87,12 @@ public class Enemy : MonoBehaviour
 
         if (life == 0)
         {
-            PhotonView playerInstance = playerWhoHit.GetComponent<PhotonView>();
+            PhotonView playerNetworkInstance = playerWhoHit.GetComponent<PhotonView>();
 
-            //playerWhoHit.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3, ForceMode2D.Impulse);
-            playerInstance.RPC("GetPointsRPC", RpcTarget.All);
+            Debug.Log($"{playerNetworkInstance.ViewID} get the points");
+            playerWhoHit.GetComponent<PlayerController>().GetPoints();
             Debug.Log($"Goblin killed by Player{playerNumber}");
-            if (photonView.IsMine) 
+            if (photonView.IsMine)
             {
                 PhotonNetwork.Destroy(this.gameObject);
             }

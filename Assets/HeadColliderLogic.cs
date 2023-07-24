@@ -14,10 +14,7 @@ public class HeadColliderLogic : MonoBehaviour
         int playerNum = player.playerNum;
         if (player) 
         {
-            //Debug.Log(enemy.players[0]);
-            //Debug.Log(enemy.players[1]);
-            Debug.Log("PlayerNum = " + playerNum);
-            photonView.RPC("GetDamagedRPC", RpcTarget.All, playerNum);
+            photonView.RPC("GetDamagedRPC", RpcTarget.AllViaServer, playerNum);
         }
     }
 }

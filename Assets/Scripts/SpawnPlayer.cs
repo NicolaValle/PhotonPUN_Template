@@ -6,7 +6,7 @@ using Photon.Pun;
 public class SpawnPlayer : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    private float edgesX = 12;
+    private float edgesX = 5;
 
     private void Start()
     {

@@ -47,6 +47,13 @@ MonoBehaviour:
   - GetPointsRPC
   - SetHealthRPC
   - ChangeColorBack
+  - ResetColor
+  - AddPlayerGameObjectRPC
+  - AddPlayerToDictionary
+  - UpdatePointsGlobally
+  - UpdatePointsGloballyRPC
+  - UpdateGlobalPoints
+  - IncreaseScoreRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -12,7 +12,7 @@ public class SpawnEnemy : MonoBehaviour
 
     private void Awake()
     {
-        if (/*PhotonNetwork.IsMasterClient == false || */PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1) //This is for test use the one on Update
         {
             TestFunction();
         }
@@ -20,12 +20,16 @@ public class SpawnEnemy : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q)) 
+        {
+            TestFunction();
+        }
         //if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.CurrentRoom.PlayerCount != 2)
         //{
         //    return;
         //}
 
-        //if (!FindObjectOfType<Enemy>()/*timeBetweenSpawns <= 0*/)
+        //if (timeBetweenSpawns <= 0)
         //{
         //    float spawnCoordinateX = Random.Range(-spawnEdgesX, spawnEdgesX);
         //    Vector3 spawnPos = new Vector3(spawnCoordinateX, spawnY, 40);
@@ -40,7 +44,7 @@ public class SpawnEnemy : MonoBehaviour
 
     private void TestFunction()
     {
-        float spawnCoordinateX = Random.Range(-spawnEdgesX, spawnEdgesX);
-        PhotonNetwork.Instantiate(enemy.name, new Vector2(spawnCoordinateX, 0), Quaternion.identity);
+        //float spawnCoordinateX = Random.Range(-spawnEdgesX, spawnEdgesX);
+        PhotonNetwork.Instantiate(enemy.name, new Vector2(-8, 0), Quaternion.identity);
     }
 }
