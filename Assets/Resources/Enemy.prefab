@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  life: 2
+  life: 1
   lifeText: {fileID: 8871927286805998277}
 --- !u!1 &7602760414823571828
 GameObject:

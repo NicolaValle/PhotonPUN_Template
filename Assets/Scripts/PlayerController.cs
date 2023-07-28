@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] internal int points;
     [SerializeField] private float jumpforce;
 
-    private PhotonView photonView;
+    internal PhotonView photonView;
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
@@ -22,19 +22,32 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            playerNum = 0;
-        }
-        else 
-        {
-            playerNum = 1;
-        }
+                    GameManager.Instance.AddPlayerToArray(this.photonView);
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    Debug.Log($"Sono il master? { PhotonNetwork.IsMasterClient}");
+        //    this.playerNum = 0;
+        //}
+        //else 
+        //{
+        //    this.playerNum = 1;
+        //}
+
         uiManager = CheckForPlayerUI();
         if (uiManager != null)
         {
             uiManager.GetComponent<PhotonView>().RPC("SetHealthRPC", RpcTarget.All, health);
         }
+    }
+
+    [PunRPC]
+    public void AssignPlayerNumberRPC() 
+    {
+        this.playerNum = GameManager.Instance.AssignPlayerNumber(this.photonView.ViewID);
+        //if (PhotonNetwork.IsMasterClient) 
+        //{
+        //    this.playerNum = GameManager.Instance.AssignPlayerNumber(this.photonView.ViewID);
+        //}
     }
 
     private void Start()

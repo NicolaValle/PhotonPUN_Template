@@ -10,17 +10,10 @@ public class SpawnEnemy : MonoBehaviour
     private float startTimeBetweenSpawns = 5;
     [SerializeField] private float timeBetweenSpawns;
 
-    private void Awake()
-    {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1) //This is for test use the one on Update
-        {
-            TestFunction();
-        }
-    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) 
+        if (Input.GetKeyDown(KeyCode.Q) && PhotonNetwork.IsMasterClient) 
         {
             TestFunction();
         }

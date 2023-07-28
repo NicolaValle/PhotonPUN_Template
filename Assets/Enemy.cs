@@ -74,29 +74,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    public void GetDamagedRPC(int playerNumber)
+    public void GetDamaged(int playerNumber)
     {
-        Debug.Log("Goblin hitted by Player" + playerNumber);
-        GameObject playerWhoHit = GameManager.Instance.GetPlayerGameObject(playerNumber);
-        Debug.Log($"Goblin damaged by {playerWhoHit.GetComponent<PlayerController>().playerNum}");
-        life--;
-        lifeText.text = life.ToString();
-        sprite.color = Color.red;
-        StartCoroutine(ResetColor());
+        Debug.Log("Goblin hittato da Player n°" + playerNumber);
+        //Debug.Log("Goblin hitted by Player" + playerNumber);
+        //GameObject playerWhoHit = GameManager.Instance.GetPlayerGameObject(playerNumber);
+        //Debug.Log($"Goblin damaged by {playerWhoHit.GetComponent<PlayerController>().playerNum}");
+        //life--;
+        //lifeText.text = life.ToString();
+        //sprite.color = Color.red;
+        //StartCoroutine(ResetColor());
 
-        if (life == 0)
-        {
-            PhotonView playerNetworkInstance = playerWhoHit.GetComponent<PhotonView>();
+        //if (life == 0)
+        //{
+        //    PhotonView playerNetworkInstance = playerWhoHit.GetComponent<PhotonView>();
 
-            Debug.Log($"{playerNetworkInstance.ViewID} get the points");
-            playerWhoHit.GetComponent<PlayerController>().GetPoints();
-            Debug.Log($"Goblin killed by Player{playerNumber}");
-            if (photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(this.gameObject);
-            }
-        }
+        //    Debug.Log($"{playerNetworkInstance.ViewID} get the points");
+        //    playerWhoHit.GetComponent<PlayerController>().GetPoints();
+        //    Debug.Log($"Goblin killed by Player{playerNumber}");
+        //    if (photonView.IsMine)
+        //    {
+        //        PhotonNetwork.Destroy(this.gameObject);
+        //    }
+        //}
     }
 
     private IEnumerator ResetColor()

@@ -34,26 +34,17 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - AddPlayerGameObjectRPC
+  - AddPlayerToDictionary
+  - ChangeColorBack
+  - GetDamagedRPC
+  - IncreaseScoreRPC
+  - SetDamageTakenRPC
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - TakeDamageRPC
-  - SetDamageTaken
-  - TakeDamage
-  - SetDamageTakenRPC
-  - GetDamagedRPC
-  - GetPointsRPC
-  - SetHealthRPC
-  - ChangeColorBack
-  - ResetColor
-  - AddPlayerGameObjectRPC
-  - AddPlayerToDictionary
-  - UpdatePointsGlobally
-  - UpdatePointsGloballyRPC
-  - UpdateGlobalPoints
-  - IncreaseScoreRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
