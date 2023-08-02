@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     // Dizionario per mappare il playerNum ai GameObjects
     private Dictionary<int, GameObject> playerGameObjectMap = new Dictionary<int, GameObject>();
+    [SerializeField] private List<PlayerController> playersList = new List<PlayerController>();
 
     private void Awake()
     {
@@ -45,6 +46,30 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (!playerGameObjectMap.ContainsKey(playerNum))
         {
             playerGameObjectMap.Add(playerNum, PhotonView.Find(viewID).gameObject);
+            PlayerController player = PhotonView.Find(viewID).gameObject.GetComponent<PlayerController>();
+            playersList.Add(player);
+            SetPlayerNumberRPC();
+        //    if (playersList.Count == 2)
+        //    {
+        //        photonView.RPC("SetPlayerNumberRPC", RpcTarget.AllViaServer);
+        //        SetPlayerNumberRPC();
+        //    }
+        }
+    }
+
+
+    //[PunRPC]
+    private void SetPlayerNumberRPC() 
+    {
+        var playersArray = playersList.ToArray();
+        for (int i = 0; i < playersArray.Length - 1; i++) 
+        {
+            Debug.Log($"my player number is {playersArray[i].playerNum}");
+            playersArray[i].playerNum = i;
+            if (playersArray[i].photonView.IsMine) 
+            {
+                Debug.Log($"my player number is {playersArray[i].playerNum}");
+            }
         }
     }
 

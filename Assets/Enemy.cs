@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    internal List<Player> players;
+    //internal List<Player> players;
     private PlayerController nearestPlayer;
     private SpriteRenderer sprite;
     private bool checkForGround;
@@ -22,42 +22,42 @@ public class Enemy : MonoBehaviour
     {
         photonView = GetComponentInParent<PhotonView>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        players = GetPlayerList();
+        //players = GetPlayerList();
     }
 
-    private List<Player> GetPlayerList() 
-    {
-        List<Player> playersList = new List<Player>(PhotonNetwork.PlayerList);
-        Debug.Log(playersList);
-        return playersList;
-    }
+    //private List<Player> GetPlayerList() 
+    //{
+    //    List<Player> playersList = new List<Player>(PhotonNetwork.PlayerList);
+    //    Debug.Log(playersList);
+    //    return playersList;
+    //}
 
     private void Update()
     {
         lifeText.text = life.ToString();
-        if (players.Count > 1)
-        {
-            
-            //float distanceOne = Vector2.Distance(transform.position, player0.transform.position);
-            //float distanceTwo = Vector2.Distance(transform.position, player1.transform.position);
+        //if (players.Count > 1)
+        //{
 
-            //if (checkForGround)
-            //{
-            //    if (distanceOne < distanceTwo)
-            //    {
-            //        nearestPlayer = players[0];
-            //    }
-            //    else
-            //    {
-            //        nearestPlayer = players[1];
-            //    }
+        //    float distanceOne = Vector2.Distance(transform.position, player0.transform.position);
+        //    float distanceTwo = Vector2.Distance(transform.position, player1.transform.position);
 
-            //    if (nearestPlayer != null)
-            //    {
-            //        transform.position = Vector2.MoveTowards(transform.position, nearestPlayer.transform.position, speed * Time.deltaTime);
-            //    }
-            //}
-        }
+        //    if (checkForGround)
+        //    {
+        //        if (distanceOne < distanceTwo)
+        //        {
+        //            nearestPlayer = players[0];
+        //        }
+        //        else
+        //        {
+        //            nearestPlayer = players[1];
+        //        }
+
+        //        if (nearestPlayer != null)
+        //        {
+        //            transform.position = Vector2.MoveTowards(transform.position, nearestPlayer.transform.position, speed * Time.deltaTime);
+        //        }
+        //    }
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -78,25 +78,25 @@ public class Enemy : MonoBehaviour
     public void GetDamagedRPC(int playerNumber)
     {
         Debug.Log("Goblin hitted by Player" + playerNumber);
-        GameObject playerWhoHit = GameManager.Instance.GetPlayerGameObject(playerNumber);
-        Debug.Log($"Goblin damaged by {playerWhoHit.GetComponent<PlayerController>().playerNum}");
-        life--;
-        lifeText.text = life.ToString();
-        sprite.color = Color.red;
-        StartCoroutine(ResetColor());
+        //GameObject playerWhoHit = GameManager.Instance.GetPlayerGameObject(playerNumber);
+        //Debug.Log($"Goblin damaged by {playerWhoHit.GetComponent<PlayerController>().playerNum}");
+        //life--;
+        //lifeText.text = life.ToString();
+        //sprite.color = Color.red;
+        //StartCoroutine(ResetColor());
 
-        if (life == 0)
-        {
-            PhotonView playerNetworkInstance = playerWhoHit.GetComponent<PhotonView>();
+        //if (life == 0)
+        //{
+        //    PhotonView playerNetworkInstance = playerWhoHit.GetComponent<PhotonView>();
 
-            Debug.Log($"{playerNetworkInstance.ViewID} get the points");
-            playerWhoHit.GetComponent<PlayerController>().GetPoints();
-            Debug.Log($"Goblin killed by Player{playerNumber}");
-            if (photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(this.gameObject);
-            }
-        }
+        //    Debug.Log($"{playerNetworkInstance.ViewID} get the points");
+        //    playerWhoHit.GetComponent<PlayerController>().GetPoints();
+        //    Debug.Log($"Goblin killed by Player{playerNumber}");
+        //    if (photonView.IsMine)
+        //    {
+        //        PhotonNetwork.Destroy(this.gameObject);
+        //    }
+        //}
     }
 
     private IEnumerator ResetColor()

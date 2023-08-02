@@ -6,12 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private UIManager uiManager;
-    [SerializeField] internal int playerNum;
+    [SerializeField] internal int playerNum = 100;
     [SerializeField] private int health;
     [SerializeField] internal int points;
     [SerializeField] private float jumpforce;
 
-    private PhotonView photonView;
+    internal PhotonView photonView;
     private Animator anim;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
@@ -22,20 +22,28 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            playerNum = 0;
-        }
-        else 
-        {
-            playerNum = 1;
-        }
+        //photonView.RPC("AssignPlayerNumberRPC", RpcTarget.AllBuffered);
+        GameManager.Instance.photonView.RPC("AddPlayerGameObjectRPC", RpcTarget.AllBuffered, playerNum, photonView.ViewID);
         uiManager = CheckForPlayerUI();
         if (uiManager != null)
         {
             uiManager.GetComponent<PhotonView>().RPC("SetHealthRPC", RpcTarget.All, health);
         }
     }
+
+    //[PunRPC]
+    //private void AssignPlayerNumberRPC() 
+    //{
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //        this.playerNum = 0;
+    //    }
+    //    else 
+    //    {
+    //        this.playerNum = 1;
+    //    }
+    //    Debug.Log($"Hey, player {playerNum} is in town!");
+    //}
 
     private void Start()
     {
@@ -46,13 +54,7 @@ public class PlayerController : MonoBehaviour
         playerProperties.Add("Points", points);
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
 
-        photonView.RPC("AddPlayerToDictionary", RpcTarget.All);
-    }
 
-    [PunRPC]
-    private void AddPlayerToDictionary() 
-    {
-        GameManager.Instance.photonView.RPC("AddPlayerGameObjectRPC", RpcTarget.All, playerNum, photonView.ViewID);
     }
 
 
