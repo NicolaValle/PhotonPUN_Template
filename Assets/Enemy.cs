@@ -74,10 +74,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    public void GetDamagedRPC(int playerNumber)
+    public void GetDamaged(int playerNumber)
     {
+<<<<<<< HEAD
         Debug.Log("Goblin hitted by Player" + playerNumber);
+=======
+        Debug.Log("Goblin hittato da Player n°" + playerNumber);
+        //Debug.Log("Goblin hitted by Player" + playerNumber);
+>>>>>>> 3c2dd09023cc3ac803ef18f32f26dfba998bb4f1
         //GameObject playerWhoHit = GameManager.Instance.GetPlayerGameObject(playerNumber);
         //Debug.Log($"Goblin damaged by {playerWhoHit.GetComponent<PlayerController>().playerNum}");
         //life--;

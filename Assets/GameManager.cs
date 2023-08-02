@@ -1,7 +1,9 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +12,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     public PhotonView photonView;
+    [SerializeField] internal List<PhotonView> playersList;
     [SerializeField] internal UIManager uiManagerPlayer1;
     [SerializeField] internal UIManager uiManagerPlayer2;
 
@@ -28,6 +31,31 @@ public class GameManager : MonoBehaviourPunCallbacks
             Destroy(gameObject);
         }
         photonView = gameObject.GetComponent<PhotonView>();
+    }
+
+    public void AddPlayerToArray(PhotonView player) 
+    {
+        playersList.Add(player);
+        player.RPC("AssignPlayerNumberRPC", RpcTarget.All);
+    }
+
+    public int AssignPlayerNumber(int photonViewID) 
+    {
+        int index = 0;
+        Debug.Log("PhotonViewID = " + photonViewID);
+        foreach (var i in playersList) 
+        {
+            Debug.Log("PlayersList contain : " + i);
+        }
+        var list = playersList
+            .Select((player, index) => new KeyValuePair<PhotonView, int>(player, index));
+
+        foreach (var i in list)
+        {
+            Debug.Log("list contain : " + i);
+            index = i.Value;
+        }
+        return index;
     }
 
     [PunRPC]

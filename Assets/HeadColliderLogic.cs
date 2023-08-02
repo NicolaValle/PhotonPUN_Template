@@ -14,7 +14,11 @@ public class HeadColliderLogic : MonoBehaviour
         int playerNum = player.playerNum;
         if (player) 
         {
+<<<<<<< HEAD
             photonView.RPC("GetDamagedRPC", RpcTarget.All, playerNum);
+=======
+            enemy.GetDamaged(playerNum);
+>>>>>>> 3c2dd09023cc3ac803ef18f32f26dfba998bb4f1
         }
     }
 }

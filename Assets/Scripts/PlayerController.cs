@@ -22,8 +22,22 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+<<<<<<< HEAD
         //photonView.RPC("AssignPlayerNumberRPC", RpcTarget.AllBuffered);
         GameManager.Instance.photonView.RPC("AddPlayerGameObjectRPC", RpcTarget.AllBuffered, playerNum, photonView.ViewID);
+=======
+                    GameManager.Instance.AddPlayerToArray(this.photonView);
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    Debug.Log($"Sono il master? { PhotonNetwork.IsMasterClient}");
+        //    this.playerNum = 0;
+        //}
+        //else 
+        //{
+        //    this.playerNum = 1;
+        //}
+
+>>>>>>> 3c2dd09023cc3ac803ef18f32f26dfba998bb4f1
         uiManager = CheckForPlayerUI();
         if (uiManager != null)
         {
@@ -31,6 +45,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     //[PunRPC]
     //private void AssignPlayerNumberRPC() 
     //{
@@ -44,6 +59,17 @@ public class PlayerController : MonoBehaviour
     //    }
     //    Debug.Log($"Hey, player {playerNum} is in town!");
     //}
+=======
+    [PunRPC]
+    public void AssignPlayerNumberRPC() 
+    {
+        this.playerNum = GameManager.Instance.AssignPlayerNumber(this.photonView.ViewID);
+        //if (PhotonNetwork.IsMasterClient) 
+        //{
+        //    this.playerNum = GameManager.Instance.AssignPlayerNumber(this.photonView.ViewID);
+        //}
+    }
+>>>>>>> 3c2dd09023cc3ac803ef18f32f26dfba998bb4f1
 
     private void Start()
     {
